@@ -33,7 +33,10 @@ export default function Header() {
       <div className="flex items-center gap-4">
         {isSignedIn ? (
           <div className="flex gap-3 items-center">
-            <span className="font-medium text-gray-700">{user?.fullName}</span>
+            <div className="flex flex-col items-end">
+              <span className="font-base text-gray-900">{user?.username}</span>
+              <span className="font-base text-gray-500">{user?.primaryEmailAddress?.emailAddress}</span>
+            </div>
             <UserButton />
           </div>
         ) : (

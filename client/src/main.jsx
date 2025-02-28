@@ -111,10 +111,6 @@ const router = createBrowserRouter([
     path: "/auth/login",
     element: <Login />,
   },
-  {
-    path: "/files",
-    element: <Files />
-  }
   // Catch-all redirect to login
   {
     path: "*",
