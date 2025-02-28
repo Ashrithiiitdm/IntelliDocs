@@ -61,7 +61,14 @@ export default function Header() {
               <span className="font-base text-gray-900">{username}</span>
               <span className="font-base text-gray-500">{user?.primaryEmailAddress?.emailAddress}</span>
             </div>
-            <UserButton />
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "h-12 w-12", // Adjust height & width
+                  userButtonBox: "h-14 w-14", // Adjust container size
+                },
+              }}
+            />
           </div>
         ) : (
           <Link to="/auth/login">
