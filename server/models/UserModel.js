@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
     User_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
     },
-    
+
 
     email: {
         type: String,
@@ -21,7 +21,21 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    }
+    },
+
+    Document_id: [
+        {
+            type: String,
+            ref: 'Documents'
+        }
+    ],
+    File_id: [
+        {
+            type: String,
+            ref: 'Files'
+        }
+    ]
+
 
 }, { minimize: false });
 

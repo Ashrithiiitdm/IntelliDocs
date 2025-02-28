@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Users } from '../models/UserModel.js';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
-
+import { v4 as uuidv4 } from 'uuid';
 
 // Sign a token for a logged in user
 const regToken = (id) => {
@@ -56,28 +56,29 @@ export const loginUser = async (req, res) => {
 
 
 export const regUser = async (req, res) => {
-    try{
-        const { name, email, password, user_name} = req.body;
+    try {
+        const { name, email, password, user_name } = req.body;
 
         // Check if the user_name is valid
         const user_nameExists = await Users.findOne({ user_name });
-
-        if(user_nameExists){
+        //console.log(user_nameExists);
+        if (user_nameExists) {
             return res.status(400).json({
                 message: 'User name already exists',
             });
         }
 
         // Check if the email is valid
-        if(!validator.isEmail(email)){
+        if (!validator.isEmail(email)) {
             return res.status(400).json({
                 message: 'Please enter a valid email',
             });
         }
 
         // Check if the email is already registered
-        const emailExists = await Users.findOne({email});
-        if(emailExists){
+        const emailExists = await Users.findOne({ email });
+        //console.log(emailExists);
+        if (emailExists) {
             return res.status(400).json({
                 message: 'Email already exists',
             });
@@ -86,8 +87,10 @@ export const regUser = async (req, res) => {
         // Hash the password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-
+        const user_id = uuidv4();
+        console.log("User:", user_id);
         const newUser = new Users({
+            User_id: user_id,
             name,
             email,
             password: hashedPassword,
@@ -104,7 +107,7 @@ export const regUser = async (req, res) => {
         });
 
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         return res.status(500).json({
             message: err.message,
