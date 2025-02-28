@@ -5,6 +5,9 @@ const FileSchema = new mongoose.Schema({
         type: String,
     },
     
+    owner: {
+        type: String,
+    },
 
     content: String,
 

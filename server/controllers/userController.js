@@ -3,6 +3,8 @@ import { Users } from '../models/UserModel.js';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
+import { File } from '../models/FileModel.js';
+import { LastSeen } from '../models/LastSeenModel.js';
 
 // Sign a token for a logged in user
 const regToken = (id) => {
@@ -111,6 +113,61 @@ export const regUser = async (req, res) => {
         console.log(err);
         return res.status(500).json({
             message: err.message,
+        });
+    }
+};
+
+export const getFiles = async (req, res) => {
+    const { User_id } = req.params;
+
+    try {
+        const user = await Users.findOne({ User_id });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const fileIds = user.File_id;
+        let fileInfo = [];
+
+        // Use `Promise.all` to wait for all async operations
+        await Promise.all(
+            fileIds.map(async (file_id) => {
+                const file = await File.findOne({ File_id: file_id });
+                if (!file) return;
+
+                let fileName = file.filename;
+                let fileUrl = file.content;
+                let fileType = file.type;
+                let ownerRow = await Users.findOne({ User_id: file.owner });
+                let owner = ownerRow.user_name;
+                // ✅ Await the query to get collaborators
+                const users = await LastSeen.find({ File_id: file_id, permission: 'edit' });
+                let collaborators = users.map(user => user.user_name);
+
+                // ✅ Await the queries for modified_at and permission
+                const lastSeenEntry = await LastSeen.findOne({ File_id: file_id, User_id });
+                let modified_at = lastSeenEntry ? lastSeenEntry.LastSeen : null;
+                let permission = lastSeenEntry ? lastSeenEntry.permission : null;
+
+                fileInfo.push({
+                    fileName,
+                    fileUrl,
+                    fileType,
+                    owner,
+                    collaborators,
+                    modified_at,
+                    permission,
+                });
+            })
+        );
+
+        return res.status(200).json({ files: fileInfo });
+
+    } 
+    catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: 'Error fetching files',
         });
     }
 };
