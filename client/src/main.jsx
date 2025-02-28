@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import Home from "./pages/Home.jsx"; // Import Home
+import Files from './pages/Files';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
     path: "/auth/login",
     element: <Login />,
   },
+  {
+    path: "/files",
+    element: <Files />
+  }
 ]);
 
 createRoot(document.getElementById('root')).render(
