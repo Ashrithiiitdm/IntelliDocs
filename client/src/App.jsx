@@ -3,6 +3,7 @@ import './App.css';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import Header from './components/Header.jsx';
+import Sidebar from './components/Sidebar';
 
 function App() {
   
@@ -13,10 +14,20 @@ function App() {
   }
 
   return (
-    <>
+    <div className="flex flex-col h-screen">
+      {/* Header */}
       <Header />
-      <Outlet />
-    </>
+      
+      {/* Sidebar + Content */}
+      <div className="flex flex-1 font-montserrat">
+        <Sidebar />
+        
+        {/* Main content area - will be filled by route components */}
+        <div className="flex-1 overflow-auto">
+          <Outlet />
+        </div>
+      </div>
+    </div>
   )
 }
 
