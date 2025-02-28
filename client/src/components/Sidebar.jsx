@@ -29,7 +29,7 @@ function SidebarItem({ icon: Icon, label, isActive = false, onClick, path }) {
   }
 
 export default function Sidebar() {
-    const [activeItem, setActiveItem] = useState("Home");
+  const [activeItem, setActiveItem] = useState("Home");
   const navigate = useNavigate();
 
   const handleItemClick = (label, path) => {
