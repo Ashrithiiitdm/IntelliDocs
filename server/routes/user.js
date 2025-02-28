@@ -1,6 +1,6 @@
 import express from 'express';
-import { loginUser, regUser } from '../controllers/userController.js';
-import { fileUploader } from '../controllers/fileUploader.js';
+import { getFiles, loginUser, regUser } from '../controllers/userController.js';
+import { deleteFile, fileUploader, renameFile } from '../controllers/fileUploader.js';
 import upload from '../utils/multer.js';
 import { sharelink,updateDoc,viewDoc } from '../controllers/sharedocument.js';
 
@@ -12,4 +12,8 @@ userRouter.post('/upload', upload.single('file'), fileUploader)
 userRouter.post('/:id/share',sharelink );
 userRouter.get('/shared/:linkId', viewDoc);
 userRouter.put('/shared/:linkId', updateDoc);
+
+userRouter.get('/:User_id/files', getFiles);
+userRouter.put('/:User_id/files/:File_id', renameFile);
+userRouter.delete('/:User_id/files/:File_id', deleteFile);
 export default userRouter;

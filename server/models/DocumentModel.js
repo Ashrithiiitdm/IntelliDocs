@@ -6,9 +6,12 @@ const DocumentSchema = new mongoose.Schema({
     },
     content: Object,
     document_name: String,
+    owner: {
+        type: String,
+    },
     created_at: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
     SharedLink: [
         {

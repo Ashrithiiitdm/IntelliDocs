@@ -5,15 +5,24 @@ const LastSeenSchema = new mongoose.Schema({
     User_id: {
         type: String,
     },
-    File_id : {
+    File_id: {
         type: String,
     },
+
+    Document_id: {
+        type: String,
+
+    },
+
     LastSeen: {
         type: Date,
         default: Date.now()
     },
 
-    permission: Array 
+    permission: {
+        type: String,
+        enum: ['edit', 'view', 'owner'],
+    }
 
 
 });
