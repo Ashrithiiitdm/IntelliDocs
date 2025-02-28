@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const FileSchema = new mongoose.Schema({
     File_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
     },
     
 
@@ -14,12 +14,12 @@ const FileSchema = new mongoose.Schema({
 
     created_at: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
 
     SharedLink:[
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: 'SharedLink'
         }
     ],

@@ -3,10 +3,10 @@ import mongoose from 'mongoose';
 const LastSeenSchema = new mongoose.Schema({
 
     User_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
     },
     File_id : {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
     },
     LastSeen: {
         type: Date,

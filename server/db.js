@@ -8,7 +8,7 @@ const connectDB = async () => {
         console.log('Mongoose is connected');
     });
     try {
-        await mongoose.connect(`${process.env.MONGO_URL}/IntelliDocs`);
+        await mongoose.connect(`${process.env.MONGO_URL}`);
     }
     catch (err) {
         console.error('Error at db.js', err);

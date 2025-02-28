@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const DocumentSchema = new mongoose.Schema({
     Document_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
     },
     content: Object,
     document_name: String,
@@ -12,7 +12,7 @@ const DocumentSchema = new mongoose.Schema({
     },
     SharedLink:[
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: 'SharedLink'
         }
     ],

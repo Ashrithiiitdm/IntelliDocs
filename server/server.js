@@ -9,10 +9,12 @@ import userRouter from './routes/user.js';
 dotenv.config();
 const app = express();
 
+app.use(express.json());  // Place after multer
+app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 8000;
 connectDB();
 app.use(cors());
-app.use(express.json());
+
 
 app.get('/', (req, res) => {
     res.send('Welcome to IntelliDocs');
