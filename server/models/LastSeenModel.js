@@ -1,33 +1,21 @@
 import mongoose from 'mongoose';
 
-const FileSchema = new mongoose.Schema({
-    File_id: {
+const LastSeenSchema = new mongoose.Schema({
+
+    User_id: {
         type: mongoose.Schema.Types.ObjectId,
     },
-    
-
-    content: String,
-
-    type: String,
-    
-    filename: String,
-
-    created_at: {
+    File_id : {
+        type: mongoose.Schema.Types.ObjectId,
+    },
+    LastSeen: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
 
-    SharedLink:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'SharedLink'
-        }
-    ],
-    FileBrief: {
-        type: JSON,
-        default: {}
-    }
+    permission: Array 
+
 
 });
 
-export const Users = mongoose.models.Users || mongoose.model('Users', userSchema);
+export const LastSeen = mongoose.models.LastSeen || mongoose.model('LastSeen', LastSeenSchema); 
