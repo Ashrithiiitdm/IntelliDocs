@@ -26,7 +26,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
  
     <StrictMode>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl='/'>
         <RouterProvider router={router} />
       </ClerkProvider>
     </StrictMode>
