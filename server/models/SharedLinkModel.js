@@ -5,4 +5,4 @@ const SharedLinkSchema = new mongoose.Schema({
     Permisson : Array
 
 })
-export const Users = mongoose.models.SharedLinkSchema;
+export const SharedLink = mongoose.models.SharedLink || mongoose.model('SharedLink', SharedLinkSchema);

@@ -1,25 +1,33 @@
 import mongoose from 'mongoose';
 
-const DocumentSchema = new mongoose.Schema({
-    Document_id: {
+const FileSchema = new mongoose.Schema({
+    File_id: {
         type: mongoose.Schema.Types.ObjectId,
     },
-    content: Object,
-    document_name: String,
+    
+
+    content: String,
+
+    type: String,
+    
+    filename: String,
+
     created_at: {
         type: Date,
         default: Date.now
     },
+
     SharedLink:[
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'SharedLink'
         }
     ],
-    DocumentBrief: {
+    FileBrief: {
         type: JSON,
         default: {}
     }
 
-})
-export const Documents = mongoose.models.Documents || mongoose.model('Documents', DocumentSchema);
+});
+
+export const File = mongoose.models.File || mongoose.model('File', FileSchema);
