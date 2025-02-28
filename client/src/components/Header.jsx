@@ -13,7 +13,7 @@ export default function Header() {
     <div className="p-[45px] px-10 flex justify-between items-center shadow-md bg-white h-16">
       {/* Logo (Clickable) */}
       <Link to="/">
-        <img src="../src/assets/Intellidocs.svg" width={115} height={115} alt="Logo" className="hover:opacity-80 transition-opacity" />
+        <img src="../src/assets/Intellidocs.svg" width={145} height={145} alt="Logo" className="hover:opacity-80 transition-opacity" />
       </Link>
       {/* {location.pathname === "/" && (
         <div className="">
