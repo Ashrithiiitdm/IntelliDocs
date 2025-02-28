@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
 import { Plus, UploadCloud, X, Pause, Play } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -21,20 +22,21 @@ export default function UploadButton({ onUpload }) {
   };
 
   const uploadFiles = (fileList) => {
-    fileList.forEach((fileObj, index) => {
-      const interval = setInterval(() => {
+    fileList.forEach((fileObj, fileIndex) => {
+      let interval = setInterval(() => {
         setFiles((prevFiles) =>
-          prevFiles.map((f, i) =>
-            i === index && !f.paused
+          prevFiles.map((f) =>
+            f.name === fileObj.name && !f.paused
               ? { ...f, progress: Math.min(f.progress + 10, 100) }
               : f
           )
         );
       }, 300);
-
+  
       fileObj.interval = interval;
     });
   };
+  
 
   const togglePause = (index) => {
     setFiles((prevFiles) =>
@@ -59,17 +61,17 @@ export default function UploadButton({ onUpload }) {
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-2xl md:max-w-3xl p-0 border border-gray-200 rounded-2xl overflow-hidden">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }} 
-          animate={{ opacity: 1, scale: 1 }} 
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
           className="bg-white rounded-2xl w-full"
         >
           {/* Header */}
           <div className="p-6 pb-4 flex justify-between items-center border-b">
             <h2 className="text-2xl font-medium text-blue-400">Upload</h2>
-            <button 
-              onClick={() => setOpen(false)} 
+            <button
+              onClick={() => setOpen(false)}
               className="text-gray-400 hover:text-gray-600"
             >
               {/* <X className="h-5 w-5" /> */}
@@ -79,13 +81,12 @@ export default function UploadButton({ onUpload }) {
           {/* Upload Area */}
           <div className="p-6">
             <div
-              className={`border-2 border-dashed rounded-lg p-12 flex flex-col items-center justify-center cursor-pointer transition-all ${
-                isDragging
+              className={`border-2 border-dashed rounded-lg p-12 flex flex-col items-center justify-center cursor-pointer transition-all ${isDragging
                   ? "border-blue-500 bg-blue-100"
                   : files.length > 0
-                  ? "border-blue-500 bg-white"
-                  : "border-blue-200 bg-blue-50"
-              }`}
+                    ? "border-blue-500 bg-white"
+                    : "border-blue-200 bg-blue-50"
+                }`}
               onDragOver={(e) => {
                 e.preventDefault();
                 setIsDragging(true);
@@ -134,21 +135,26 @@ export default function UploadButton({ onUpload }) {
                       <div className="flex items-center gap-2 w-full">
                         <span className="truncate">{file.name}</span>
 
-                        {/* Progress Bar */}
-                        <div className="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden">
-                          <div
-                            className="bg-blue-500 h-full transition-all"
-                            style={{ width: `${file.progress}%` }}
-                          ></div>
+                        {/* Progress Bar with Percentage */}
+                        <div className="flex items-center gap-2 flex-1">
+                          <div className="relative w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                              className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all rounded-full"
+                              style={{ width: `${file.progress}%` }}
+                            />
+                          </div>
+                          <span className="text-xs font-medium text-gray-600 w-10 text-right">{file.progress}%</span>
                         </div>
 
-                        {/* Pause/Resume Button */}
-                        <button
-                          onClick={() => togglePause(index)}
-                          className="text-gray-600 hover:text-gray-800 transition"
-                        >
-                          {file.paused ? <Play className="h-5 w-5" /> : <Pause className="h-5 w-5" />}
-                        </button>
+                        {/* Pause/Resume Button - Hidden when 100% */}
+                        {file.progress < 100 && (
+                          <button
+                            onClick={() => togglePause(index)}
+                            className="text-gray-600 hover:text-gray-800 transition"
+                          >
+                            {file.paused ? <Play className="h-5 w-5" /> : <Pause className="h-5 w-5" />}
+                          </button>
+                        )}
 
                         {/* Discard Button */}
                         <button
