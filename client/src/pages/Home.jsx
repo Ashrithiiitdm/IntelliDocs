@@ -62,7 +62,7 @@ export default function Home() {
       {/* Recent Files Section */}
       <section>
         <h2 className="text-xl font-semibold mb-2">Recent</h2>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="flex gap-4 overflow-x-auto py-5">
           {recent.map((file) => (
             <RecentCard key={file.id} name={file.name} date={file.modifiedAt} fileCount={3} size="5MB" />
           ))}
