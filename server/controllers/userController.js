@@ -32,7 +32,6 @@ export const getUser = async (req, res) => {
 
 //         // Check if the user_name is valid
 //         const existingUser = await Users.findOne({ user_name });
-
         const validPass = await bcrypt.compare(password, existingUser.password);
         if (!validPass) {
             return res.status(400).json({
@@ -68,7 +67,10 @@ export const getUser = async (req, res) => {
 
 export const regUser = async (req, res) => {
     try {
-        const { name, email, password, user_name } = req.body;
+        console.log("Inside regUsre");
+        const { email, password, user_name } = req.body;
+
+        console.log(req.body);
 
         // Check if the user_name is valid
         const user_nameExists = await Users.findOne({ user_name });
@@ -100,10 +102,9 @@ export const regUser = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const user_id = uuidv4();
-        console.log("User:", user_id);
+        // Hash the password
         const newUser = new Users({
             User_id: user_id,
-            name,
             email,
             password: "",
             user_name,
