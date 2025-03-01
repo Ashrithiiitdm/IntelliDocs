@@ -48,6 +48,28 @@ export default function UploadButton({ onUpload }) {
     );
   };
 
+  const handleUploadToBackend = async () => {
+    const formData = new FormData();
+    files.forEach((file) => formData.append("files", file.file));
+
+    try {
+      const response = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Upload failed");
+
+      console.log("Files uploaded successfully!");
+      setFiles([]); // Clear files after successful upload
+      setOpen(false); // Close the dialog box
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    }
+  };
+
+
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -170,6 +192,16 @@ export default function UploadButton({ onUpload }) {
                   ))}
                 </ul>
               </div>
+
+              {/* Upload Button (Only when all files reach 100%) */}
+              {files.length > 0 && files.every(file => file.progress === 100) && (
+                <button
+                  onClick={handleUploadToBackend}
+                  className="mt-4 w-full py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition"
+                >
+                  Upload to Server
+                </button>
+              )}
             </div>
           )}
         </motion.div>

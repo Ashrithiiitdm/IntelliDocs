@@ -5,21 +5,23 @@ import connectDB from './db.js';
 import userRouter from './routes/user.js';
 
 
+
 dotenv.config();
 const app = express();
 
+app.use(express.json());  // Place after multer
+app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 8000;
 connectDB();
-app.use(cors());
-app.use(express.json());
+
+app.use(cors({ origin: "*" }));
+
 
 app.get('/', (req, res) => {
     res.send('Welcome to IntelliDocs');
 });
 
 app.use('/api/auth', userRouter);
-
-
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
