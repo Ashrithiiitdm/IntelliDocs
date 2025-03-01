@@ -6,15 +6,17 @@ import mammoth from 'mammoth';
 import { v4 as uuidv4 } from 'uuid';
 import { readFileSync, unlinkSync } from 'fs';
 import { LastSeen } from "../models/LastSeenModel.js";
+import axios from 'axios';
 
 
 export const fileUploader = async (req, res) => {
 
     try {
         //const { file } = req.file;
-        console.log(req.body);
-        console.log(req.file);
+        // console.log("BO", req.body);
+        // console.log("File",req.file);
         const { email } = req.body;
+        // console.log(req.files)
 
         if (!req.file) {
             return res.status(400).json({
@@ -23,10 +25,11 @@ export const fileUploader = async (req, res) => {
         }
 
         const User = await Users.findOne({ email });
-        console.log(User);
+        // console.log("User", User);
         const User_id = User.User_id;
-        console.log(User_id);
+        // console.log(User_id);
 
+        console.log(req.file)
         const ext = req.file.originalname.split(".").pop();
 
         if (ext === 'docx') {
@@ -71,22 +74,33 @@ export const fileUploader = async (req, res) => {
             // });
 
         }
-        console.log(req.file.originalname);
+        // console.log(req.file.originalname);
         const filename = req.file.originalname.split('.').slice(0, -1).join('.');
         let fileUrl = await cloudinary.uploader.upload(req.file.path, { resource_type: 'auto' });
-
+        let File_id = uuidv4()
         const fileUpload = await new File({
-            File_id: uuidv4(),
+            File_id: File_id,
             content: fileUrl.secure_url,
             owner: User_id,
             type: ext,
             filename: filename,
         });
 
+
         await fileUpload.save();
 
-        const user = await Users.findOne({ User_id });
-        console.log(user);
+        const flaskResponse = await axios.post('http://127.0.0.1:5000/process',{
+            "File_id" : File_id,
+            "url" : fileUrl
+        })
+
+        console.log(flaskResponse.data.files)
+        // console.log("file upload",fileUpload)
+        
+
+        const user = await Users.findOne({  User_id });
+        // console.log("UUU   ", user);
+
         user.File_id.push(fileUpload.File_id);
         await user.save();
 
@@ -96,7 +110,7 @@ export const fileUploader = async (req, res) => {
             permission: 'owner',
             LastSeen: Date.now(),
         });
-        console.log(lastSeen);
+        // console.log("lastseen  ",lastSeen);
         await lastSeen.save();
 
         return res.status(200).json({

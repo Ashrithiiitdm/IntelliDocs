@@ -1,0 +1,41 @@
+```json
+{
+  "MetaData": {
+    "FileName": "amitbilldata.pdf",
+    "FileType": "pdf"
+  },
+  "summary": "This document is a bill from Apollo Hospital & Diagnostics for Amit Verma. It details various charges including consultation fees, laboratory tests, radiology, medicine, and other services. The bill includes a subtotal of INR 24,150, a discount of INR 1,500, and a service tax of INR 3,600, resulting in a grand total of INR 22,650. Payment is currently pending and due by 10/03/2025.",
+  "sentiment": "neutral",
+  "class": "invoices",
+  "tags": [
+    "Hospital Bill",
+    "Medical Services",
+    "Payment",
+    "Apollo Hospital",
+    "Amit Verma"
+  ],
+  "datatype": "both Numerical and Text",
+  "importance": "4",
+  "Medical data": {
+    "PatientName": "Amit Verma",
+    "Patient Identification": {
+      "Patient ID": "101",
+      "Patient Name": "Amit Verma",
+      "Address": "123, Gandhi Marg, Connaught Place, New Delhi, Delhi, 110001",
+      "Contact": "+91-9876543210"
+    },
+    "Billing": {
+      "Hospital Name": "Apollo Hospital & Diagnostics",
+      "Bill Number": "BILL-20250227-001",
+      "Bill Date": "27/02/2025",
+      "Subtotal": "24,150 INR",
+      "Discount/Concessions": "-1,500 INR",
+      "Service Tax": "3,600 INR",
+      "Grand Total": "22,650 INR",
+      "Payment Status": "Pending",
+      "Payment Mode": "Not Yet Paid",
+      "Due Date": "10/03/2025"
+    }
+  }
+}
+```
