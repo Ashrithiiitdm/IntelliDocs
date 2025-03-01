@@ -62,7 +62,7 @@ const Files = () => {
           throw new Error("Failed to fetch files");
         }
         const filedata = response.data.files;
-  
+        console.log(filedata[0].owner)
         const fileArray = filedata.map((file, index) => ({
             id: index + 1,
             name: `${file.fileName}.${file.fileType}`,

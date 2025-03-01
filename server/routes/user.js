@@ -7,7 +7,7 @@ const userRouter = express.Router();
 
 userRouter.post('/register', regUser);
 userRouter.post('/upload', upload.single('file'), fileUploader)
-userRouter.get('/getuser', getUser)
+userRouter.get('/getuser', getUser);
 
 userRouter.get('/:User_id/files', getFiles);
 userRouter.put('/:User_id/files/:File_id', renameFile);
