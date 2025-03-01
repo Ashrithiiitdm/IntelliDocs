@@ -2,7 +2,8 @@ import './App.css';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import Header from './components/Header.jsx';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/Sidebar'; 
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   
@@ -13,20 +14,23 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      {/* Header */}
-      <Header />
-      
-      {/* Sidebar + Content */}
-      <div className="flex flex-1 font-montserrat">
-        <Sidebar />
+    <>
+      <Toaster position="top-right" />
+      <div className="flex flex-col h-screen">
+        {/* Header */}
+        <Header />
         
-        {/* Main content area - will be filled by route components */}
-        <div className="flex-1 overflow-auto">
-          <Outlet />
+        {/* Sidebar + Content */}
+        <div className="flex flex-1 font-montserrat">
+          <Sidebar />
+          
+          {/* Main content area - will be filled by route components */}
+          <div className="flex-1 overflow-auto">
+            <Outlet />
+          </div>
         </div>
       </div>
-    </div>
+    </>    
   )
 }
 

@@ -16,6 +16,7 @@ import Recent from "./pages/Recent.jsx";
 import Settings from "./pages/Settings.jsx";
 import Loading from './components/Loading';
 import axios from 'axios';
+import { AppProvider } from "./context/AppContext";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 const api_url = import.meta.env.VITE_BACKEND_URL;
@@ -129,7 +130,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl='/auth/login'>
-      <RouterProvider router={router} />
+      <AppProvider>
+        <RouterProvider router={router} />
+      </AppProvider>      
     </ClerkProvider>
   </StrictMode>
 )

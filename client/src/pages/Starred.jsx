@@ -1,10 +1,6 @@
 import FileTable from '@/components/FilesTable';
 import { useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useUser } from '@clerk/clerk-react';
-import axios from 'axios';
-
-const api_url = import.meta.env.VITE_BACKEND_URL;
+import { useApp } from "../context/AppContext";
 // const files = [
 //   {
 //     id:1,
@@ -46,46 +42,8 @@ const api_url = import.meta.env.VITE_BACKEND_URL;
 
 const Starred = () => {
   const location = useLocation();
-  const { user } = useUser();
-  const [files, setFiles]= useState([]);
+  const { files } = useApp();
 
-  useEffect(() => {
-    const fetchFiles = async () => {
-      if (!user) return; // Ensure user is logged in before fetching
-      try {
-        const user_id = await axios.get(`${api_url}/getuser?user_name=${user.username}`);
-        // const user_id = await fetch(`${api_url}/getuser?user_name=${user.username}`)
-        // console.log(user_id.data.user_id);
-        const response = await axios.get(`${api_url}/${user_id.data.user_id}/files`);
-        if (response.status !== 200) {
-          throw new Error("Failed to fetch files");
-        }
-        const filedata = response.data.files;
-  
-        const fileArray = filedata.map((file, index) => ({
-            id: index + 1,
-            name: `${file.fileName}.${file.fileType}`,
-            modifiedAt: new Date(file.modified_at).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short", // "Jan", "Feb", ..., "Dec"
-              day: "2-digit",
-            }),
-            owner: file.owner,
-            collaborators: file.collaborators,
-            starred: false,
-            url: file.fileUrl
-        }));
-
-        setFiles(fileArray);
-        
-      } catch (error) {
-        console.error("Error fetching files:", error);
-      }
-    };
-    
-
-    fetchFiles();
-  }, [user, setFiles]);
   return (
     <main className="flex-1 p-6 overflow-y-auto m-10 rounded-2xl" style={{ backgroundColor: "#F2F6FE" }}>
         <h1 className="text-3xl font-semibold mb-4">Starred</h1>
