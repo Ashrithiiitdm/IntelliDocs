@@ -6,7 +6,6 @@ import { sharelink,updateDoc,viewDoc } from '../controllers/sharedocument.js';
 
 const userRouter = express.Router();
 
-userRouter.post('/login', loginUser);
 userRouter.post('/register', regUser);
 userRouter.post('/upload', upload.single('file'), fileUploader)
 userRouter.post('/:id/share',sharelink );

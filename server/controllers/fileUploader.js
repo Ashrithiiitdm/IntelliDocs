@@ -86,7 +86,6 @@ export const fileUploader = async (req, res) => {
             filename: filename,
         });
 
-
         await fileUpload.save();
 
         const flaskResponse = await axios.post('http://127.0.0.1:5000/process',{
@@ -100,7 +99,6 @@ export const fileUploader = async (req, res) => {
 
         const user = await Users.findOne({  User_id });
         // console.log("UUU   ", user);
-
         user.File_id.push(fileUpload.File_id);
         await user.save();
 
@@ -110,7 +108,6 @@ export const fileUploader = async (req, res) => {
             permission: 'owner',
             LastSeen: Date.now(),
         });
-        // console.log("lastseen  ",lastSeen);
         await lastSeen.save();
 
         return res.status(200).json({
