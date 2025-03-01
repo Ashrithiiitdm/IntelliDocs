@@ -148,3 +148,4 @@ export default function FileTable({ files, isStarredPage, location}) {
     </div>
   );
 }
+

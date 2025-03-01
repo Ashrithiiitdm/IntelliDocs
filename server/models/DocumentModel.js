@@ -13,10 +13,10 @@ const DocumentSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    SharedLink:[
+    SharedLink: [
         {
-            type: String,
-            ref: 'SharedLink'
+            linkId: { type: String, required: true },
+            permission: { type: String, enum: ["view", "edit"], required: true }
         }
     ],
     DocumentBrief: {

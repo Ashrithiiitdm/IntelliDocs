@@ -33,13 +33,12 @@ export const getUser = async (req, res) => {
 //         // Check if the user_name is valid
 //         const existingUser = await Users.findOne({ user_name });
 
-//         if (!existingUser) {
-//             return res.status(400).json({
-//                 message: 'User not found',
-//             });
-//         }
-
-//         const validPass = await bcrypt.compare(password, existingUser.password);
+        const validPass = await bcrypt.compare(password, existingUser.password);
+        if (!validPass) {
+            return res.status(400).json({
+                message: 'Invalid password',
+            });
+        }
 
 //         if (!validPass) {
 //             return res.status(400).json({
@@ -101,9 +100,14 @@ export const regUser = async (req, res) => {
 
         const user_id = uuidv4();
         // Hash the password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const user_id = uuidv4();
+        // Hash the password
         const newUser = new Users({
             User_id: user_id,
             email,
+            password: "",
             password: "",
             user_name,
         });

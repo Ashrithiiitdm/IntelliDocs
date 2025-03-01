@@ -22,8 +22,8 @@ const FileSchema = new mongoose.Schema({
 
     SharedLink:[
         {
-            type: String,
-            ref: 'SharedLink'
+            linkId: { type: String, required: true },
+            permission: { type: String, enum: ["view", "edit"], required: true }
         }
     ],
     FileBrief: {
