@@ -66,7 +66,7 @@ export default function Header() {
               appearance={{
                 elements: {
                   avatarBox: "h-12 w-12", // Adjust height & width
-                  userButtonBox: "h-14 w-14", // Adjust container size
+                  userButtonBox: "h-12 w-12", // Adjust container size
                 },
               }}
             />

@@ -1,0 +1,41 @@
+{
+  "MetaData": {
+    "FileName": "g0t0vfxsztsv9qafv17o.pdf",
+    "FileType": "pdf"
+  },
+  "summary": "This document is a bill from Narayana Health Hospital & Diagnostics for Priya Iyer. The bill includes charges for various medical services such as consultations, lab tests, radiology, and medication. The subtotal is INR 15,450 with a discount of INR 1,200 and a service tax of INR 2,508. The grand total is INR 16,758 and payment is currently pending with a due date of 05/03/2025.",
+  "sentiment": "neutral",
+  "class": "invoices",
+  "tags": [
+    "Medical Bill",
+    "Narayana Health",
+    "Patient Invoice",
+    "Healthcare Services",
+    "Payment Due"
+  ],
+  "datatype": "both",
+  "importance": "4",
+  "Medical data": {
+    "PatientName": "Priya lyer",
+    "Patient Identification": {
+      "Address": "Plot No.\nGandhi Nagar; Chrompet; Chennai; Tamil Nadu, 600032",
+      "Contact": "+91-9876501122",
+      "Patient ID": "104"
+    },
+    "Billing": {
+      "Hospital Name": "Narayana Health Hospital & Diagnostics",
+      "Address": "No 12, Mount Road, Guindy,\nChennai; Tamil Nadu, 600032",
+      "Phone": "+91-44-4567890",
+      "Website": "www.narayanahealth.com",
+      "Bill Number": "BILL-20250227-004",
+      "Bill Date": "27/02/2025",
+      "Subtotal": "15,450 INR",
+      "Discount": "1,200 INR",
+      "Service Tax": "2,508 INR",
+      "Grand Total": "16,758 INR",
+      "Payment Status": "Pending",
+      "Payment Mode": "Not Yet Paid",
+      "Due Date": "05/03/2025"
+    }
+  }
+}
