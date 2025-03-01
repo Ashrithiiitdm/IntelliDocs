@@ -134,7 +134,6 @@ const FileConverter = () => {
         <FileType className="mr-2" size={32} /> File Converter
       </h1>
       <hr className="h-[3px] my-5 border-0 bg-[#95ADDC]" />
-
       {selectedFile ? (
         <div>
           <div className="mb-6">
