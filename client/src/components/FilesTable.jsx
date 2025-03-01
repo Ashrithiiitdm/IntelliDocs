@@ -19,7 +19,7 @@ const colorClasses = [
   { bg: "bg-orange-300", text: "text-orange-500" },
 ];
 
-export default function FileTable({ files, isStarredPage, location}) {
+export default function FileTable({ files, isStarredPage, location }) {
   const navigate = useNavigate();
   // const location = useLocation();
 
@@ -70,13 +70,26 @@ export default function FileTable({ files, isStarredPage, location}) {
       {selectedUrl ? (
         <div className="h-screen flex flex-col">
           {/* Button stays at the top */}
-          <button
-            onClick={handleBack}
-            className="mb-4 p-2 bg-gray-300 hover:bg-gray-400 rounded self-start"
-          >
-            ⬅ Back to Files
-          </button>
-        
+          <div className="flex justify-center">
+            <button
+              onClick={handleBack}
+              className="mb-4 p-2 bg-gray-300 hover:bg-gray-400 rounded self-start"
+            >
+              ⬅ Back to Files
+            </button>
+            <button
+              onClick={handleBack}
+              className="mb-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 
+             text-white font-semibold rounded-lg shadow-md 
+             hover:from-blue-600 hover:to-indigo-700 
+             transition-all duration-300 transform hover:scale-105 
+             focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
+            >
+              ✨ Summarize
+            </button>
+
+          </div>
+
           {/* Centered DocViewer */}
           <div className="flex-grow flex items-center justify-center">
             <DocViewer
@@ -85,7 +98,7 @@ export default function FileTable({ files, isStarredPage, location}) {
               style={{ width: "100%", height: "100%" }}
             />
           </div>
-        </div>      
+        </div>
       ) : (
         <Card className="p-4 bg-blue-50">
           <Table>
@@ -104,9 +117,8 @@ export default function FileTable({ files, isStarredPage, location}) {
                   <TableCell className="text-center cursor-pointer" onClick={() => toggleStar(file.id)}>
                     <Star
                       key={index}
-                      className={`h-5 w-5 transition-colors ${
-                        file.starred ? "text-yellow-500 fill-yellow-500" : "text-gray-400"
-                      }`}
+                      className={`h-5 w-5 transition-colors ${file.starred ? "text-yellow-500 fill-yellow-500" : "text-gray-400"
+                        }`}
                     />
                   </TableCell>
                   <TableCell className="gap-2 cursor-pointer" onClick={() => handleRowClick(file.url)}>
