@@ -1,15 +1,32 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Progress } from "@/components/ui/progress";
-import { Plus, UploadCloud, X, Pause, Play } from "lucide-react";
+import { Plus, X, Pause, Play } from "lucide-react";
 import { motion } from "framer-motion";
+import { useUser } from '@clerk/clerk-react';
+import axios from 'axios';
+import { toast } from "react-hot-toast";
+import { useApp } from "@/context/AppContext"; // Import your custom hook
 
-export default function UploadButton({ onUpload }) {
+const api_url = import.meta.env.VITE_BACKEND_URL;
+
+export default function UploadButton() {
   const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const { user: clerkUser } = useUser();
+  const [email, setEmail] = useState(clerkUser?.primaryEmailAddress?.emailAddress || "");
+  const [uploading, setUploading] = useState(false);
+  
+  // Get context from your AppProvider
+  const { files: contextFiles, setFiles: setContextFiles, user } = useApp();
 
+  useEffect(() => {
+    if (clerkUser?.primaryEmailAddress?.emailAddress) {
+      setEmail(clerkUser.primaryEmailAddress.emailAddress);
+    }
+  }, [clerkUser]);
+  
   const handleFileChange = (event) => {
     const uploadedFiles = Array.from(event.target.files).map((file) => ({
       file,
@@ -22,7 +39,7 @@ export default function UploadButton({ onUpload }) {
   };
 
   const uploadFiles = (fileList) => {
-    fileList.forEach((fileObj, fileIndex) => {
+    fileList.forEach((fileObj) => {
       let interval = setInterval(() => {
         setFiles((prevFiles) =>
           prevFiles.map((f) =>
@@ -37,7 +54,6 @@ export default function UploadButton({ onUpload }) {
     });
   };
   
-
   const togglePause = (index) => {
     setFiles((prevFiles) =>
       prevFiles.map((file, i) =>
@@ -48,28 +64,100 @@ export default function UploadButton({ onUpload }) {
     );
   };
 
-  const handleUploadToBackend = async () => {
+  const uploadFile = async (file) => {
+    if (!user || !user.username) {
+      return { success: false, message: "User information not available" };
+    }
+    
     const formData = new FormData();
-    files.forEach((file) => formData.append("files", file.file));
-
+    formData.append("file", file);
+    formData.append("email", user?.email?.emailAddress || "");
+  
     try {
-      const response = await fetch("http://localhost:5000/upload", {
-        method: "POST",
-        body: formData,
+      // First, get the user ID
+      const userResponse = await axios.get(`${api_url}/getuser?user_name=${user.username}`);
+      const userId = userResponse.data.user_id;
+      
+      // Then upload the file with the user ID
+      const response = await axios.post(`${api_url}/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-
-      if (!response.ok) throw new Error("Upload failed");
-
-      console.log("Files uploaded successfully!");
-      setFiles([]); // Clear files after successful upload
-      setOpen(false); // Close the dialog box
+  
+      console.log("Upload successful:", response.data);
+      return { 
+        success: true, 
+        message: `File "${file.name}" uploaded successfully!`,
+        fileData: response.data 
+      };
     } catch (error) {
-      console.error("Error uploading files:", error);
+      console.error("Error uploading file:", error);
+      return { success: false, message: `Failed to upload "${file.name}". Try again.` };
     }
   };
-
-
-
+  
+  const handleUploadToBackend = async () => {
+    if (files.length === 0) {
+      toast.error("No files selected!");
+      return;
+    }
+  
+    setUploading(true);
+    toast.loading("Uploading files...");
+  
+    try {
+      const uploadedFilesData = [];
+      
+      for (const fileObj of files) {
+        const result = await uploadFile(fileObj.file);
+        if (!result.success) {
+          throw new Error(result.message);
+        }
+        
+        // Extract file information from the original file object if not in response
+        const fileName = result.fileData?.fileName || fileObj.file.name.split('.')[0] || "untitled";
+        const fileType = result.fileData?.fileType || 
+                        (fileObj.file.name.includes('.') ? 
+                          fileObj.file.name.split('.').pop() : 
+                          "");
+        
+        // Format the file data to match your context format
+        const processedFile = {
+          id: contextFiles.length + uploadedFilesData.length + 1,
+          name: `${fileName}.${fileType}`,
+          modifiedAt: new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+          }),
+          owner: user?.username || "me",
+          collaborators: [],
+          starred: false,
+          url: result.fileData?.fileUrl || "",
+        };
+        
+        console.log("Processed file:", processedFile); // Debug
+        uploadedFilesData.push(processedFile);
+      }
+      
+      // Update context with the newly uploaded files
+      if (uploadedFilesData.length > 0) {
+        setContextFiles([...contextFiles, ...uploadedFilesData]);
+      }
+  
+      setFiles([]); // Clear files after successful upload
+      setOpen(false); // Close dialog
+  
+      toast.dismiss(); // Remove loading toast
+      toast.success("All files uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      toast.dismiss(); // Remove loading toast
+      toast.error("An error occurred while uploading. Please try again.");
+    } finally {
+      setUploading(false); // Stop uploading
+    }
+  };
+  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -117,7 +205,11 @@ export default function UploadButton({ onUpload }) {
               onDrop={(e) => {
                 e.preventDefault();
                 setIsDragging(false);
-                handleFileChange(e);
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                const filesArray = Array.from(files);
+                const event = { target: { files: filesArray } };
+                handleFileChange(event);
               }}
               onClick={(e) => {
                 e.stopPropagation();
@@ -197,9 +289,12 @@ export default function UploadButton({ onUpload }) {
               {files.length > 0 && files.every(file => file.progress === 100) && (
                 <button
                   onClick={handleUploadToBackend}
-                  className="mt-4 w-full py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition"
+                  disabled={uploading}
+                  className={`mt-4 w-full py-2 ${
+                    uploading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600"
+                  } text-white font-medium rounded-lg transition`}
                 >
-                  Upload to Server
+                  {uploading ? "Uploading..." : "Upload to Server"}
                 </button>
               )}
             </div>

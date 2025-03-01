@@ -80,11 +80,11 @@ export default function FileTable({ files, isStarredPage, location}) {
           </button>
         
           {/* Centered DocViewer */}
-          <div className="flex-grow flex items-center justify-center py-6">
+          <div className="flex-grow flex items-center justify-center">
             <DocViewer
               pluginRenderers={DocViewerRenderers}
               documents={[{ uri: selectedUrl.includes("http") ? `${selectedUrl}?nocors=true` : selectedUrl }]}
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: "80%", height: "80vh" }}
             />
           </div>
         </div>      
@@ -148,3 +148,4 @@ export default function FileTable({ files, isStarredPage, location}) {
     </div>
   );
 }
+

@@ -12,6 +12,7 @@ userRouter.get('/getuser', getUser)
 userRouter.post('/:id/share',sharelink );
 userRouter.get('/shared/:linkId', viewDoc);
 userRouter.put('/shared/:linkId', updateDoc);
+userRouter.get('/getuser', getUser)
 
 userRouter.get('/:User_id/files', getFiles);
 userRouter.put('/:User_id/files/:File_id', renameFile);

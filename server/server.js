@@ -16,6 +16,8 @@ connectDB();
 
 app.use(cors({ origin: "*" }));
 
+app.use(cors({ origin: "*" }));
+
 app.get('/', (req, res) => {
     res.send('Welcome to IntelliDocs');
 });
