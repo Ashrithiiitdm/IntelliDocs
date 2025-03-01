@@ -13,7 +13,8 @@ app.use(express.json());  // Place after multer
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 8000;
 connectDB();
-app.use(cors());
+
+app.use(cors({ origin: "*" }));
 
 
 app.get('/', (req, res) => {
@@ -21,8 +22,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', userRouter);
-
-
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

@@ -13,6 +13,7 @@ export default function Header() {
   useEffect(() => {
     if (user?.username !== username) {
       console.log("Username changed to:", user?.username);
+      //change the username in the backend here
       setUsername(user?.username);
       // sendUsernameToBackend(user?.username);
     }
