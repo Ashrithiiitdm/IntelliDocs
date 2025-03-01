@@ -1,48 +1,15 @@
 import FolderCard from "@/components/FolderCard";
 import RecentCard from "@/components/RecentCard";
 import React, { useEffect, useState } from "react";
+import { useApp } from "@/context/AppContext";
 
 export default function Home() {
   const [folders, setFolders] = useState([]);
-  const [recent, setRecent] = useState([]);
+  const {files} = useApp();
+  const recentData = files.sort((filea, fileb) => fileb.modified_at - filea.modified_at)
 
-  useEffect(() => {
-    // Simulated API response for recent files
-    setRecent([
-      {
-        id: 1,
-        name: "Analysis.txt",
-        modifiedAt: "Sept 23, 2025",
-        owner: "me",
-        collaborators: ["KD", "GA", "GS"],
-        starred: false,
-      },
-      {
-        id: 2,
-        name: "Analysis.txt",
-        modifiedAt: "August 18, 2025",
-        owner: "Pandiri Veeresh Kumar",
-        collaborators: ["KD", "GA", "GS"],
-        starred: false,
-      },
-      {
-        id: 3,
-        name: "Analysis.txt",
-        modifiedAt: "Jan 17, 2025",
-        owner: "Pandiri Veeresh Kumar",
-        collaborators: ["KD", "GA", "GS"],
-        starred: true,
-      },
-      {
-        id: 4,
-        name: "Analysis.txt",
-        modifiedAt: "Feb 28, 2025",
-        owner: "Pandiri Veeresh Kumar",
-        collaborators: ["KD", "GA", "GS"],
-        starred: true,
-      },
-    ]);
-  }, []); // Empty dependency array ensures it runs **only once** after the first render
+
+   // Empty dependency array ensures it runs **only once** after the first render
 
   return (
     <main className="p-6 overflow-y-auto m-10 rounded-2xl" style={{ backgroundColor: "#F2F6FE" }}>
@@ -63,7 +30,7 @@ export default function Home() {
       <section>
         <h2 className="text-xl font-semibold mb-2">Recent</h2>
         <div className="flex gap-4 overflow-x-auto py-5">
-          {recent.map((file) => (
+          {recentData.map((file) => (
             <RecentCard key={file.id} name={file.name} date={file.modifiedAt} fileCount={3} size="5MB" />
           ))}
         </div>

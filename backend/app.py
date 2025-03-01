@@ -160,14 +160,14 @@ def perform_ocr(filepath, filename):
     if file_extension == 'pdf':
         try:
             # Convert PDF to images
-            POPPLER_PATH = r'C:\Users\govin\Downloads\Release-24.08.0-0\poppler-24.08.0\Library\bin'            #! POINT TWO
+            POPPLER_PATH = r'/usr/bin'            #! POINT TWO
             images = convert_from_path(filepath, poppler_path=POPPLER_PATH)
         except Exception as e:
             print("Error converting PDF to images:", e)
             raise e
 
         # Use EasyOCR on each PDF page (image)
-        reader = easyocr.Reader(['en'], gpu=False)                           #! POINT THREE
+        reader = easyocr.Reader(['en'], gpu=True)                           #! POINT THREE
         for image in images:
             img_np = np.array(image)
             result = reader.readtext(img_np, detail=0)

@@ -34,8 +34,6 @@ export default function FileTable({ files, isStarredPage, location}) {
       setFileData(files.filter((file) => (isStarredPage ? file.starred : true)));
     }
 
-    console.log(selectedUrl);
-
     const handlePopState = () => {
       if (selectedUrl) {
         navigate(location.pathname);
@@ -84,7 +82,7 @@ export default function FileTable({ files, isStarredPage, location}) {
             <DocViewer
               pluginRenderers={DocViewerRenderers}
               documents={[{ uri: selectedUrl.includes("http") ? `${selectedUrl}?nocors=true` : selectedUrl }]}
-              style={{ width: "80%", height: "80vh" }}
+              style={{ width: "100%", height: "100%" }}
             />
           </div>
         </div>      

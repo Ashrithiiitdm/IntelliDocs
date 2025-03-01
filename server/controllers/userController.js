@@ -103,7 +103,6 @@ export const regUser = async (req, res) => {
             User_id: user_id,
             email,
             password: "",
-            password: "",
             user_name,
         });
 
